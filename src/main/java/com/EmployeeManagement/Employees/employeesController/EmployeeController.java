@@ -5,7 +5,6 @@ import com.EmployeeManagement.Employees.employeeDto.EmployeeRequest;
 import com.EmployeeManagement.Employees.employeeDto.EmployeeResponse;
 import com.EmployeeManagement.Employees.employeeDto.EmployeeUpdateRequest;
 import com.EmployeeManagement.Employees.employeeDto.IdRequest;
-import com.EmployeeManagement.Employees.employeeEntity.EmployeeDetails;
 import com.EmployeeManagement.Employees.employeeService.EmployeeService;
 import com.EmployeeManagement.Employees.employeeService.SalarayServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +40,15 @@ public class EmployeeController {
         return ResponseEntity.ok(employeeResponse);
     }
 
-    @GetMapping("Delete")
-    public EmployeeResponse deleteEmployee(@RequestBody IdRequest idRequest){
-        return  employeeService.deleteById(idRequest);
+    @DeleteMapping("Delete/{employeeId}")
+    public ResponseEntity<String> deleteEmployee(@PathVariable Long employeeId   ){
+        return  employeeService.deleteById(employeeId);
     }
 
     @PutMapping("/increment-salary")
     public CompletableFuture<ResponseEntity<EmployeeResponse>> incrementAllSalaries() {
         return service.incrementSalary()
-                .thenApply(response -> ResponseEntity.ok(response));
+                .thenApply(ResponseEntity::ok);
     }
 
 

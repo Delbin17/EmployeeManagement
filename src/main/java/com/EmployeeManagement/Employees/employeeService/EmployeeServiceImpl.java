@@ -5,10 +5,14 @@ import com.EmployeeManagement.Employees.employeeEntity.EmployeeDetails;
 import com.EmployeeManagement.Employees.employeeRepository.EmployeeRepository;
 import com.EmployeeManagement.Employees.employeeUtills.EmployeeUtills;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -51,6 +55,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    @Cacheable(value = "employeeCache", key = "#idRequest.employeeId")
+
     public EmployeeResponse employeeById(IdRequest idRequest) {
 
         boolean isEmployeeExist = employeeRepository.existsById(idRequest.getEmployeeId());
@@ -125,26 +131,17 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     @Override
-    public EmployeeResponse deleteById(IdRequest idRequest) {
-        EmployeeDetails existingEmployee = getExistingEmployee(idRequest.getEmployeeId());
+    public ResponseEntity<String> deleteById(Long employeeId) {
+        Optional<EmployeeDetails> existingEmployee = employeeRepository.findById(employeeId);
 
-        if (existingEmployee==null) {
-            return EmployeeResponse.builder()
-                    .responseCode(EmployeeUtills.Employee_NotExisted_CODE)
-                    .responseMessage(EmployeeUtills.Employee_NotExisted_MESSAGE)
-                    .employeeInfo(null)
-                    .build();
+        if (existingEmployee.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(EmployeeUtills.Employee_NotExisted_MESSAGE);
         }
-        employeeRepository.deleteById(idRequest.getEmployeeId());
-        return EmployeeResponse.builder()
-                .responseCode(EmployeeUtills.Employee_Deleted_CODE)
-                .responseMessage(EmployeeUtills.Employee_Deleted_MESSAGE)
-                .employeeInfo(null)
 
-                .build();
-
+        employeeRepository.deleteById(employeeId);
+        return ResponseEntity.ok(EmployeeUtills.Employee_Deleted_MESSAGE);
     }
-
 }
 
 

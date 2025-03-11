@@ -5,6 +5,7 @@ import com.EmployeeManagement.Employees.employeeDto.EmployeeRequest;
 import com.EmployeeManagement.Employees.employeeDto.EmployeeResponse;
 import com.EmployeeManagement.Employees.employeeDto.EmployeeUpdateRequest;
 import com.EmployeeManagement.Employees.employeeDto.IdRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -16,7 +17,7 @@ public interface EmployeeService {
 
      EmployeeResponse updateEmployee(EmployeeUpdateRequest employeeUpdateRequest);
 
-     EmployeeResponse deleteById(IdRequest idRequest);
+     ResponseEntity<String> deleteById(Long employeeId);
 
 
 }

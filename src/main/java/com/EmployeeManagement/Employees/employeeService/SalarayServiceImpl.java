@@ -4,6 +4,7 @@ package com.EmployeeManagement.Employees.employeeService;
 import com.EmployeeManagement.Employees.employeeDto.EmployeeResponse;
 import com.EmployeeManagement.Employees.employeeEntity.EmployeeDetails;
 import com.EmployeeManagement.Employees.employeeRepository.EmployeeRepository;
+import com.EmployeeManagement.Employees.employeeUtills.EmployeeUtills;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
@@ -21,7 +22,7 @@ public class SalarayServiceImpl  {
 
     private final EmployeeRepository employeeRepository;
 
-    @Async  // Runs in a separate thread
+    @Async
     public CompletableFuture<EmployeeResponse> incrementSalary() {
         log.info("Starting salary increment process in thread: " + Thread.currentThread().getName());
 
@@ -30,15 +31,14 @@ public class SalarayServiceImpl  {
         if (employees.isEmpty()) {
             return CompletableFuture.completedFuture(
                     EmployeeResponse.builder()
-                            .responseCode("404")
-                            .responseMessage("No employees found to update.")
+                            .responseCode(EmployeeUtills.Employee_NotExisted_CODE)
+                            .responseMessage(EmployeeUtills.Employee_NotExisted_MESSAGE)
                             .build()
             );
         }
 
-        // Process employees in parallel
         employees.parallelStream().forEach(employee -> {
-            BigDecimal increasedSalary = employee.getSalary().multiply(BigDecimal.valueOf(1.10)); // 10% increase
+            BigDecimal increasedSalary = employee.getSalary().multiply(BigDecimal.valueOf(1.10));
             employee.setSalary(increasedSalary);
             employeeRepository.save(employee);
         });
@@ -46,8 +46,8 @@ public class SalarayServiceImpl  {
         log.info("Salary increment completed!");
         return CompletableFuture.completedFuture(
                 EmployeeResponse.builder()
-                        .responseCode("200")
-                        .responseMessage("Salaries incremented successfully by 10%.")
+                        .responseCode(EmployeeUtills.Salary_Updated_CODE)
+                        .responseMessage(EmployeeUtills.Salary_Updated_MESSAGE)
                         .build()
         );
     }

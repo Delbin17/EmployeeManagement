@@ -17,4 +17,7 @@ public class EmployeeUtills {
     public static final String Employee_Deleted_CODE="005";
     public static final String Employee_Deleted_MESSAGE="Employee Deleted Succesfullly";
 
+    public static final String Salary_Updated_CODE="006";
+    public static final String Salary_Updated_MESSAGE="Salary incremented   Succesfullly";
+
 }
