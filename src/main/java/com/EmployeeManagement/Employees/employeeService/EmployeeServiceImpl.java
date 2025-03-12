@@ -20,6 +20,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
+
     @Override
     public EmployeeResponse addEmployee(EmployeeRequest employeeRequest) {
 
@@ -38,6 +39,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .position(employeeRequest.getPosition())
                 .salary(employeeRequest.getSalary())
                 .gender(employeeRequest.getGender())
+                .password(employeeRequest.getPassword())
                 .build();
         EmployeeDetails SaveEmployee = employeeRepository.save(employee);
 
@@ -50,6 +52,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                         .employeeName(employeeRequest.getEmployeeName())
                         .gender(employeeRequest.getGender())
                         .position(employeeRequest.getPosition())
+                        .salary(employeeRequest.getSalary())
                         .build())
                 .build();
     }
@@ -66,7 +69,6 @@ public class EmployeeServiceImpl implements EmployeeService {
                         .responseCode(EmployeeUtills.Employee_NotExisted_CODE)
                         .responseMessage(EmployeeUtills.Employee_NotExisted_MESSAGE)
                         .employeeInfo(null)
-
                         .build();
             }
 

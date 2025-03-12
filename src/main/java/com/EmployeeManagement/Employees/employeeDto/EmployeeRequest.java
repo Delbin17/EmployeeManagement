@@ -19,6 +19,8 @@ public class EmployeeRequest {
     private String position;
     private  String department;
     private String gender;
+    private String password;
+
 
 
 }

@@ -4,6 +4,7 @@ package com.EmployeeManagement.Employees.employeeEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -25,9 +26,13 @@ public class EmployeeDetails {
     private String position;
     private  String department;
     private String gender;
+    private String password;
+
 
     @UpdateTimestamp
     private LocalDate dateOfJoining;
 
-
+    public void setPassword(String rawPassword) {
+        this.password = new BCryptPasswordEncoder().encode(rawPassword);
+    }
 }

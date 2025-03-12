@@ -40,7 +40,7 @@ public class EmployeeServiceTest {
 
     @Test
     void shouldNotAddEmployeeIfAlreadyExists() {
-        EmployeeRequest employeeRequest = new EmployeeRequest(1L, "Delbin", BigDecimal.valueOf(50000), "Developer", "It", "male");
+        EmployeeRequest employeeRequest = new EmployeeRequest(1L, "Delbin", BigDecimal.valueOf(50000), "Developer", "It", "male","1234");
         when(employeeRepository.existsByEmployeeName("Delbin")).thenReturn(true);
 
         EmployeeResponse response = employeeService.addEmployee(employeeRequest);
@@ -53,8 +53,7 @@ public class EmployeeServiceTest {
     }
     @Test
     void shouldAddNewEmployee() {
-        // Given: Employee does not exist
-        EmployeeRequest employeeRequest = new EmployeeRequest(1L, "Delbin", BigDecimal.valueOf(50000), "Developer", "It", "male");
+        EmployeeRequest employeeRequest = new EmployeeRequest(1L, "Delbin", BigDecimal.valueOf(50000), "Developer", "It", "male","1234");
         EmployeeDetails employeeDetails = EmployeeDetails.builder()
                 .employeeId(1L)
                 .employeeName("Delbin")
